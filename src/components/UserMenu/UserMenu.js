@@ -9,7 +9,9 @@ const { getUserEmail } = authSelectors;
 const UserMenu = () => {
   const email = useSelector(getUserEmail);
   const dispatch = useDispatch();
-  const onLogout = () => dispatch(authOperations.logout());
+  const onLogout = useCallback(() => dispatch(authOperations.logout()), [
+    dispatch,
+  ]);
   return (
     <div className={styles.container}>
       <img src={defaultAvatar} alt="avatar" width="30" />

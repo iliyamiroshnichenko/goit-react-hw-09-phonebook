@@ -1,5 +1,5 @@
 import { useEffect, Suspense, lazy } from 'react';
-import { Switch, Route, Redirect } from 'react-router-dom';
+import { Switch, Redirect } from 'react-router-dom';
 import routes from './routes';
 import Container from './components/Container';
 import AppBar from './components/AppBar';
@@ -35,24 +35,26 @@ const App = () => {
       <AppBar />
       <Suspense fallback={<Loader />}>
         <Switch>
-          <Route exact path={routes.home} component={HomePage} />
+          <PublicRoute exact path={routes.home}>
+            <HomePage />
+          </PublicRoute>
           <PublicRoute
             path={routes.register}
             restricted
-            component={RegisterPage}
             redirectTo={routes.contacts}
-          />
+          >
+            <RegisterPage />
+          </PublicRoute>
           <PublicRoute
             path={routes.login}
             restricted
-            component={LoginPage}
             redirectTo={routes.contacts}
-          />
-          <PrivateRoute
-            path={routes.contacts}
-            component={ContactsPage}
-            redirectTo={routes.login}
-          />
+          >
+            <LoginPage />
+          </PublicRoute>
+          <PrivateRoute path={routes.contacts} redirectTo={routes.login}>
+            <ContactsPage />
+          </PrivateRoute>
           <Redirect to={routes.home} />
         </Switch>
       </Suspense>
